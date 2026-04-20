@@ -3,6 +3,7 @@ package com.server.task_manager.userModule.userConvertor;
 
 import com.server.task_manager.userModule.userBoundary.UserBoundary;
 import com.server.task_manager.userModule.userEntity.UserEntity;
+import com.server.task_manager.userModule.userBoundary.UserResponse;
 
 public class UserConvertor {
     public UserEntity convertToUser(UserBoundary userBoundary) {
@@ -24,5 +25,14 @@ public class UserConvertor {
         userBoundary.setPhoneNumber(userEntity.getPhoneNumber());
         userBoundary.setPassword(userEntity.getPassword());
         return userBoundary;
+    }
+    public UserResponse toResponse(UserEntity userEntity) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(userEntity.getId());
+        userResponse.setFirstName(userEntity.getFirstName());
+        userResponse.setLastName(userEntity.getLastName());
+        userResponse.setEmail(userEntity.getEmail());
+        userResponse.setPhoneNumber(userEntity.getPhoneNumber());
+        return userResponse;
     }
 }
