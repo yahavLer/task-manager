@@ -1,10 +1,9 @@
 package com.server.task_manager.taskModule.taskConvertor;
-import java.util.Date;
 import com.server.task_manager.taskModule.taskBoundary.TaskBoundary;
 import com.server.task_manager.taskModule.taskEntity.TaskEntity;
 import com.server.task_manager.taskModule.taskBoundary.TaskResponse;
 public class TaskConvertor {
-    public TaskEntity convertToTask(TaskBoundary taskBoundary) {
+    public TaskEntity convertToTaskEntity(TaskBoundary taskBoundary) {
         TaskEntity task = new TaskEntity();
         task.setId(taskBoundary.getId());
         task.setTitle(taskBoundary.getTitle());
@@ -22,7 +21,7 @@ public class TaskConvertor {
         taskBoundary.setDueDate(taskEntity.getDueDate());
         return taskBoundary;    
     }
-    public TaskResponse toResponse(TaskEntity taskEntity) {
+    public TaskResponse convertToTaskResponse(TaskEntity taskEntity) {
         TaskResponse taskResponse = new TaskResponse();
         taskResponse.setId(taskEntity.getId());
         taskResponse.setTitle(taskEntity.getTitle());

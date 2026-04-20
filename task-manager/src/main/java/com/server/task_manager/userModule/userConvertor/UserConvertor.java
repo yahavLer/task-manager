@@ -6,7 +6,7 @@ import com.server.task_manager.userModule.userEntity.UserEntity;
 import com.server.task_manager.userModule.userBoundary.UserResponse;
 
 public class UserConvertor {
-    public UserEntity convertToUser(UserBoundary userBoundary) {
+    public UserEntity convertToUserEntity(UserBoundary userBoundary) {
         UserEntity user = new UserEntity();
         user.setId(userBoundary.getId());
         user.setFirstName(userBoundary.getFirstName());
@@ -26,7 +26,7 @@ public class UserConvertor {
         userBoundary.setPassword(userEntity.getPassword());
         return userBoundary;
     }
-    public UserResponse toResponse(UserEntity userEntity) {
+    public UserResponse convertToUserResponse(UserEntity userEntity) {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(userEntity.getId());
         userResponse.setFirstName(userEntity.getFirstName());

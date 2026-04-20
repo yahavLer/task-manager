@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.server.task_manager.taskModule.taskBoundary.TaskBoundary;
 import com.server.task_manager.taskModule.taskBoundary.TaskResponse;
 import com.server.task_manager.taskModule.taskEntity.TaskEntity;
+import com.server.task_manager.userModule.userBoundary.UserBoundary;
+import com.server.task_manager.userModule.userBoundary.UserResponse;
 import com.server.task_manager.userModule.userConvertor.UserConvertor;
+import com.server.task_manager.userModule.userEntity.UserEntity;
 import com.server.task_manager.userModule.userService.UserService;
 
 @RestController
@@ -30,21 +33,21 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserBoundary userBoundary) {
         UserEntity userEntity = userService.createUser(userBoundary);
-        UserResponse userResponse = userConvertor.toResponse(userEntity);
+        UserResponse userResponse = userConvertor.convertToUserResponse(userEntity);
         return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable String userId) {
         UserEntity userEntity = userService.getUserById(userId);
-        UserResponse userResponse = userConvertor.toResponse(userEntity);
+        UserResponse userResponse = userConvertor.convertToUserResponse(userEntity);
         return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserBoundary userBoundary) {
         UserEntity updatedUserEntity = userService.updateUser(userId, userBoundary);
-        UserResponse userResponse = userConvertor.toResponse(updatedUserEntity);
+        UserResponse userResponse = userConvertor.convertToUserResponse(updatedUserEntity);
         return ResponseEntity.ok(userResponse);
     }
 

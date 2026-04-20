@@ -32,21 +32,21 @@ public class TaskController {
     @PostMapping("/create")
     public ResponseEntity<TaskResponse> createTask(@RequestBody TaskBoundary taskBoundary) {
         TaskEntity taskEntity = taskService.createTask(taskBoundary);
-        TaskResponse taskResponse = taskConvertor.toResponse(taskEntity);
+        TaskResponse taskResponse = taskConvertor.convertToTaskResponse(taskEntity);
         return ResponseEntity.ok(taskResponse);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<TaskResponse> getTaskById(@PathVariable String taskId) {
         TaskEntity taskEntity = taskService.getTaskById(taskId);
-        TaskResponse taskResponse = taskConvertor.toResponse(taskEntity);
+        TaskResponse taskResponse = taskConvertor.convertToTaskResponse(taskEntity);
         return ResponseEntity.ok(taskResponse);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<TaskResponse> updateTask(@PathVariable String taskId, @RequestBody TaskBoundary taskBoundary) {
         TaskEntity updatedTaskEntity = taskService.updateTask(taskId, taskBoundary);
-        TaskResponse taskResponse = taskConvertor.toResponse(updatedTaskEntity);
+        TaskResponse taskResponse = taskConvertor.convertToTaskResponse(updatedTaskEntity);
         return ResponseEntity.ok(taskResponse); 
     }
 
