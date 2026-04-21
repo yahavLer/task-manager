@@ -1,10 +1,13 @@
 package com.server.task_manager.userModule.userConvertor;
 
 
+import org.springframework.stereotype.Component;
+
 import com.server.task_manager.userModule.userBoundary.UserBoundary;
 import com.server.task_manager.userModule.userEntity.UserEntity;
 import com.server.task_manager.userModule.userBoundary.UserResponse;
 
+@Component
 public class UserConvertor {
     public UserEntity convertToUserEntity(UserBoundary userBoundary) {
         UserEntity user = new UserEntity();

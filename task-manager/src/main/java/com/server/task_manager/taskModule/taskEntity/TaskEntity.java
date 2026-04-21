@@ -1,9 +1,9 @@
 package com.server.task_manager.taskModule.taskEntity;
 import com.server.task_manager.taskModule.enums.TaskPriority;
 import com.server.task_manager.taskModule.enums.TaskStatus;
-import java.util.Date;
+import com.server.task_manager.userModule.userEntity.UserEntity;
 
-import org.springframework.data.annotation.Id;
+import java.util.Date;
 
 import jakarta.persistence.*;
 
@@ -22,8 +22,15 @@ public class TaskEntity {
     
     private String title;
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @Enumerated(EnumType.STRING)
     private TaskPriority priority;
+    
     private Date dueDate;
-    private String userId;    
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;   
 }

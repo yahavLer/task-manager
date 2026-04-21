@@ -2,8 +2,6 @@ package com.server.task_manager.userModule.userEntity;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-
 import com.server.task_manager.taskModule.taskEntity.TaskEntity;
 
 import jakarta.persistence.*;

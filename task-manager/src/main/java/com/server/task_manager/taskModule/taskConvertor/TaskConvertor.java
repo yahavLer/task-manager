@@ -1,7 +1,11 @@
 package com.server.task_manager.taskModule.taskConvertor;
+import org.springframework.stereotype.Component;
+
 import com.server.task_manager.taskModule.taskBoundary.TaskBoundary;
 import com.server.task_manager.taskModule.taskEntity.TaskEntity;
 import com.server.task_manager.taskModule.taskBoundary.TaskResponse;
+
+@Component
 public class TaskConvertor {
     public TaskEntity convertToTaskEntity(TaskBoundary taskBoundary) {
         TaskEntity task = new TaskEntity();
@@ -29,7 +33,7 @@ public class TaskConvertor {
         taskResponse.setStatus(taskEntity.getStatus());
         taskResponse.setPriority(taskEntity.getPriority());
         taskResponse.setDueDate(taskEntity.getDueDate());
-        taskResponse.setUserId(taskEntity.getUserId());
+        taskResponse.setUserId(taskEntity.getUser().getId());
         return taskResponse;
     }
 
