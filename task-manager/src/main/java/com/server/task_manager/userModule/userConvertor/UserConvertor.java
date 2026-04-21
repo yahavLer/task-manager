@@ -11,7 +11,6 @@ import com.server.task_manager.userModule.userBoundary.UserResponse;
 public class UserConvertor {
     public UserEntity convertToUserEntity(UserBoundary userBoundary) {
         UserEntity user = new UserEntity();
-        user.setId(userBoundary.getId());
         user.setFirstName(userBoundary.getFirstName());
         user.setLastName(userBoundary.getLastName());
         user.setEmail(userBoundary.getEmail());
@@ -21,7 +20,6 @@ public class UserConvertor {
     }
     public UserBoundary convertToUserBoundary(UserEntity userEntity) {
         UserBoundary userBoundary = new UserBoundary();
-        userBoundary.setId(userEntity.getId());
         userBoundary.setFirstName(userEntity.getFirstName());
         userBoundary.setLastName(userEntity.getLastName());
         userBoundary.setEmail(userEntity.getEmail());

@@ -1,5 +1,7 @@
 package com.server.task_manager.userModule.userService;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,9 +52,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validationInput(UserBoundary userBoundary) {
-        if (userBoundary.getId() == null || userBoundary.getId().isEmpty()) {
-            throw new IllegalArgumentException("User ID cannot be null or empty");
-        }
         if (userBoundary.getEmail() == null || userBoundary.getEmail().isEmpty()) {
             throw new IllegalArgumentException("Email cannot be null or empty");
         }
@@ -62,5 +61,15 @@ public class UserServiceImpl implements UserService {
         if (userBoundary.getLastName() == null || userBoundary.getLastName().isEmpty()) {
             throw new IllegalArgumentException("Last name cannot be null or empty");
         }
+    }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
     }
 }

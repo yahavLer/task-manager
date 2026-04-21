@@ -1,33 +1,29 @@
 package com.server.task_manager.taskModule.taskController;
-import org.apache.catalina.User;
-import org.springframework.data.convert.ReadingConverter;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import com.server.task_manager.taskModule.taskBoundary.TaskBoundary;
 import com.server.task_manager.taskModule.taskBoundary.TaskResponse;
 import com.server.task_manager.taskModule.taskConvertor.TaskConvertor;
 import com.server.task_manager.taskModule.taskEntity.TaskEntity;
 import com.server.task_manager.taskModule.taskService.TaskService;
-import com.server.task_manager.userModule.userEntity.UserEntity;
+import com.server.task_manager.taskModule.enums.TaskPriority;
+import com.server.task_manager.taskModule.enums.TaskStatus;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
     private final TaskService taskService;
     private final TaskConvertor taskConvertor;
+    private final RestTemplate restTemplate;
 
-    public TaskController(TaskService taskService, TaskConvertor taskConvertor) {
+    public TaskController(TaskService taskService, TaskConvertor taskConvertor, RestTemplate restTemplate) {
         this.taskService = taskService;
         this.taskConvertor = taskConvertor;
+        this.restTemplate = restTemplate;
     }
     @PostMapping("/create")
     public ResponseEntity<TaskResponse> createTask(@RequestBody TaskBoundary taskBoundary) {
@@ -37,7 +33,7 @@ public class TaskController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<TaskResponse> getTaskById(@PathVariable String taskId) {
+    public ResponseEntity<TaskResponse> getTaskById(@RequestParam String taskId) {
         TaskEntity taskEntity = taskService.getTaskById(taskId);
         TaskResponse taskResponse = taskConvertor.convertToTaskResponse(taskEntity);
         return ResponseEntity.ok(taskResponse);
@@ -51,9 +47,60 @@ public class TaskController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteTask(@PathVariable String taskId) {
+    public ResponseEntity<String> deleteTask(@RequestParam String taskId) {
         taskService.deleteTask(taskId);
         return ResponseEntity.ok("Task deleted successfully");
+    }
+
+    @DeleteMapping("/deleteAll")
+    public ResponseEntity<String> deleteAllTasks() {
+        return ResponseEntity.ok("All tasks deleted successfully");
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<TaskResponse>> getAllTasks() {
+        List<TaskEntity> taskEntities = taskService.getAllTasks();
+        List<TaskResponse> taskResponses = taskEntities.stream()
+                .map(taskConvertor::convertToTaskResponse)
+                .toList();
+        return ResponseEntity.ok(taskResponses);
+    }
+
+    @GetMapping("/getTaskByStatus/{status}")
+    public ResponseEntity<List<TaskResponse>> getTasksByStatus(@PathVariable TaskStatus status) {
+        List<TaskEntity> taskEntities = taskService.getTasksByStatus(status);
+        List<TaskResponse> taskResponses = taskEntities.stream()
+                .map(taskConvertor::convertToTaskResponse)
+                .toList();
+        return ResponseEntity.ok(taskResponses);
+    }
+
+    @GetMapping("/getTaskByPriority/{priority}")
+    public ResponseEntity<List<TaskResponse>> getTasksByPriority(@PathVariable TaskPriority priority) {
+        List<TaskEntity> taskEntities = taskService.getTasksByPriority(priority);
+        List<TaskResponse> taskResponses = taskEntities.stream()
+                .map(taskConvertor::convertToTaskResponse)
+                .toList();
+        return ResponseEntity.ok(taskResponses);
+    }
+
+    @GetMapping("/getTaskByDueDate/{dueDate}")
+    public ResponseEntity<List<TaskResponse>> getTasksByDueDate(@PathVariable Date dueDate) {
+        List<TaskEntity> taskEntities = taskService.getTasksByDueDate(dueDate);
+        List<TaskResponse> taskResponses = taskEntities.stream()
+                .map(taskConvertor::convertToTaskResponse)
+                .toList();
+        return ResponseEntity.ok(taskResponses);
+    }
+
+
+    @PutMapping("/updateStatus/{taskId}/status/{status}")
+    public ResponseEntity<TaskResponse> updateTaskStatus(@PathVariable String taskId, @PathVariable TaskStatus status) {
+        TaskEntity taskEntity = taskService.getTaskById(taskId);
+        taskEntity.setStatus(status);
+        TaskEntity updatedTaskEntity = taskService.updateTask(taskId, taskConvertor.convertToTaskBoundary(taskEntity));
+        TaskResponse taskResponse = taskConvertor.convertToTaskResponse(updatedTaskEntity);
+        return ResponseEntity.ok(taskResponse);
     }
 
 }

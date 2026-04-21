@@ -1,7 +1,13 @@
 package com.server.task_manager.taskModule.taskService;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.server.task_manager.taskModule.enums.TaskPriority;
+import com.server.task_manager.taskModule.enums.TaskStatus;
 import com.server.task_manager.taskModule.taskBoundary.TaskBoundary;
 import com.server.task_manager.taskModule.taskConvertor.TaskConvertor;
 import com.server.task_manager.taskModule.taskEntity.TaskEntity;
@@ -28,22 +34,62 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskEntity getTaskById(String taskId) {
-        return taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        return taskRepository.findById(taskId);
     }
 
     @Override
     public TaskEntity updateTask(String taskId, TaskBoundary taskBoundary) {
-        TaskEntity existingTask = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
+        TaskEntity existingTask = taskRepository.findById(taskId);
         return taskRepository.save(existingTask);
     }
 
     @Override
     public void deleteTask(String taskId) {
-        if(!taskRepository.findById(taskId).isPresent()) {
-            throw new RuntimeException("Task not found");
-        }
-        TaskEntity existingTask = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found"));
-        taskRepository.delete(existingTask);
+        taskRepository.deleteById(taskId);
+    }
+
+    @Override
+    public List<TaskEntity> getTasksByStatus(TaskStatus status) {
+        /*return taskRepository.findAll().stream()
+                .filter(task -> task.getStatus() == status)
+                .toList();
+        */
+        return taskRepository.findByStatus(status);
+    }
+
+    @Override
+    public List<TaskEntity> getTasksByPriority(TaskPriority priority) {
+        /*return taskRepository.findAll().stream()
+                .filter(task -> task.getPriority() == priority)
+                .toList();
+        */
+        return taskRepository.findByPriority(priority);
+    }
+
+    @Override
+    public List<TaskEntity> getTasksByDueDate(Date dueDate) {
+        /*return taskRepository.findAll().stream()
+                .filter(task -> task.getDueDate() == dueDate)
+                .toList();
+        */
+        return taskRepository.findByDueDate(dueDate);
+    }
+
+    @Override
+    public TaskEntity updateTaskStatus(String taskId, TaskStatus status) {
+        TaskEntity taskEntity = taskRepository.findById(taskId);
+        taskEntity.setStatus(status);
+        return taskRepository.save(taskEntity);
+    }
+
+    @Override
+    public List<TaskEntity> getAllTasks() {
+        return taskRepository.findAll();
+    }
+
+    @Override
+    public void deleteAllTasks() {
+        taskRepository.deleteAll();
     }
     
 }

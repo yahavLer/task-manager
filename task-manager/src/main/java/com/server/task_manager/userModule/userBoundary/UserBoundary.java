@@ -1,16 +1,11 @@
 package com.server.task_manager.userModule.userBoundary;
 
 public class UserBoundary {
-    private String id;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
     private String password;
-
-    public String getId() {
-        return id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -30,10 +25,6 @@ public class UserBoundary {
 
     public String getPassword() {
         return password;
-    }
-    
-    public void setId(String id) {
-        this.id = id;
     }
     
     public void setFirstName(String firstName) {
