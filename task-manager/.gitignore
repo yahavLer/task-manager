@@ -37,3 +37,17 @@ out/
 .vscode/
 
 .env
+
+# frontend
+task-manager-front/node_modules/
+task-manager-front/dist/
+task-manager-front/.vite/
+
+# env
+.env
+task-manager-front/.env
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
