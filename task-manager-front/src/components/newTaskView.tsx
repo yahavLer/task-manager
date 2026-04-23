@@ -10,6 +10,7 @@ export type NewTaskFormData = {
     dueDate: string;
     priority: TaskPriority;
     status: TaskStatus;
+    userId: string;
 };
 
 type NewTaskFormViewProps = {

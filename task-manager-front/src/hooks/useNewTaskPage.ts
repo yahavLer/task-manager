@@ -36,9 +36,9 @@ export default function useNewTaskPage() {
         const payload= {
             title: formData.title.trim(),
             description: formData.description.trim(),
-            dueDate: formData.dueDate,
-            priority: formData.priority.trim() as TaskPriority,
-            status: formData.status.trim() as TaskStatus,
+            dueDate: new Date(formData.dueDate),
+            priority: formData.priority,
+            status: formData.status,
             userId: formData.userId.trim(), 
         }
         console.log("payload", payload)
