@@ -1,8 +1,17 @@
 import { API_BASE_URL } from "../config";
 import { taskHttp } from "../http";
 
-export type TaskStatus = "PENDING" | "IN_PROGRESS" | "DONE";
-export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
+export enum TaskPriority {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH",
+}
+
+export enum TaskStatus {
+  PENDING = "PENDING",
+  IN_PROGRESS = "IN_PROGRESS",
+  DONE = "DONE",
+}
 
 export interface TaskBoundary {
     title : string;

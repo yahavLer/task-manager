@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {taskService} from "../api/interfaces/taskService"
 import type { NewTaskFormData } from "../components/newTaskView";
+import { TaskPriority, TaskStatus } from "../api/interfaces/taskService";
+
 export default function useNewTaskPage() {
     const navigate = useNavigate();
     
@@ -11,12 +13,13 @@ export default function useNewTaskPage() {
         title: '',
         description: '',
         dueDate: '',
-        priority: '',
-        status: ''
+        priority: TaskPriority.MEDIUM,
+        status: TaskStatus.PENDING,
+        userId: ''
     });
     const canSubmit = Object.values(formData).every(value => value.trim() !== '');
 
-    function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function onChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
 
         setFormData((prev) => ({
@@ -34,8 +37,9 @@ export default function useNewTaskPage() {
             title: formData.title.trim(),
             description: formData.description.trim(),
             dueDate: formData.dueDate,
-            priority: formData.priority,
-            status: formData.status
+            priority: formData.priority.trim() as TaskPriority,
+            status: formData.status.trim() as TaskStatus,
+            userId: formData.userId.trim(), 
         }
         console.log("payload", payload)
         try {
