@@ -12,22 +12,27 @@ import com.server.task_manager.taskModule.taskBoundary.TaskBoundary;
 import com.server.task_manager.taskModule.taskConvertor.TaskConvertor;
 import com.server.task_manager.taskModule.taskEntity.TaskEntity;
 import com.server.task_manager.taskModule.taskRepository.TaskRepository;
-
+import com.server.task_manager.userModule.userEntity.UserEntity;
+import com.server.task_manager.userModule.userRepository.UserRepository;
 
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final TaskConvertor taskConvertor;
+    private final UserRepository userRepository;
     private final RestTemplate restTemplate;
-    public TaskServiceImpl(TaskRepository taskRepository, TaskConvertor taskConvertor, RestTemplate restTemplate) {
+    public TaskServiceImpl(TaskRepository taskRepository, TaskConvertor taskConvertor, UserRepository userRepository, RestTemplate restTemplate) {
         this.taskRepository = taskRepository;
         this.taskConvertor = taskConvertor;
+        this.userRepository = userRepository;
         this.restTemplate = restTemplate;
     }
 
     @Override
     public TaskEntity createTask(TaskBoundary taskBoundary) {
         TaskEntity taskEntity = taskConvertor.convertToTaskEntity(taskBoundary);
+        UserEntity user = userRepository.findById(taskBoundary.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        taskEntity.setUser(user);
         taskEntity=taskRepository.save(taskEntity);
         return taskEntity;              
     }

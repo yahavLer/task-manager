@@ -9,19 +9,19 @@ import com.server.task_manager.taskModule.taskBoundary.TaskResponse;
 public class TaskConvertor {
     public TaskEntity convertToTaskEntity(TaskBoundary taskBoundary) {
         TaskEntity task = new TaskEntity();
-        task.setId(taskBoundary.getId());
         task.setTitle(taskBoundary.getTitle());
         task.setDescription(taskBoundary.getDescription());
         task.setStatus(taskBoundary.getStatus());
+        task.setPriority(taskBoundary.getPriority());
         task.setDueDate(taskBoundary.getDueDate());
         return task;
     }
     public TaskBoundary convertToTaskBoundary(TaskEntity taskEntity) {
         TaskBoundary taskBoundary = new TaskBoundary();
-        taskBoundary.setId(taskEntity.getId());
         taskBoundary.setTitle(taskEntity.getTitle());
         taskBoundary.setDescription(taskEntity.getDescription());
         taskBoundary.setStatus(taskEntity.getStatus());
+        taskBoundary.setPriority(taskEntity.getPriority());
         taskBoundary.setDueDate(taskEntity.getDueDate());
         return taskBoundary;    
     }

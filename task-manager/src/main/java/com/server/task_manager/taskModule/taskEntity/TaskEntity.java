@@ -30,7 +30,7 @@ public class TaskEntity {
     private TaskPriority priority;
     
     private Date dueDate;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id",nullable = false)
     private UserEntity user;   
 }

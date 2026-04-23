@@ -29,10 +29,20 @@ export default function useRegistrationPage() {
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitting(true);
+        console.log("submit clicked");
+
+        const payload= {
+            firstName: formData.firstName.trim(),
+            lastName: formData.lastName.trim(),
+            email: formData.email.trim(),
+            password: formData.password,
+            phoneNumber: formData.phoneNumber.trim()
+        }
+        console.log("payload", payload)
         try {
-            await userService.createUser(formData)
+            await userService.createUser(payload)
             toast.success("Registration successful! Please log in.");
-            navigate("/login");
+            navigate("/tasks");
         } catch (error) {
             toast.error("Registration failed. Please try again.");
         } finally {

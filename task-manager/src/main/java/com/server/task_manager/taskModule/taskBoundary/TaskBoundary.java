@@ -6,7 +6,6 @@ import com.server.task_manager.taskModule.enums.TaskPriority;
 import com.server.task_manager.taskModule.enums.TaskStatus;
 
 public class TaskBoundary {
-    private String id;
     private String title;
     private String description;
     private TaskStatus status;
@@ -14,9 +13,6 @@ public class TaskBoundary {
     private Date dueDate;
     private String userId;
 
-    public String getId() {
-        return id;
-    }
 
     public String getTitle() {
         return title;
@@ -41,9 +37,7 @@ public class TaskBoundary {
     public String getUserId() {
         return userId;
     }
-    public void setId(String id) {
-        this.id = id;
-    }
+
     public void setTitle(String title) {
         this.title = title;
     }

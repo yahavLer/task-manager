@@ -16,4 +16,5 @@ public interface TaskRepository extends JpaRepository<TaskEntity, UUID>, JpaSpec
     List<TaskEntity> findByStatus(TaskStatus status);
     List<TaskEntity> findByPriority(TaskPriority priority);
     List<TaskEntity> findByDueDate(Date dueDate);
+    void deleteAll();
 }

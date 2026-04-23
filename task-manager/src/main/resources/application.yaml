@@ -12,6 +12,11 @@ spring:
     password: secret
     driver-class-name: org.postgresql.Driver
 
+  logging:
+    level:
+      org.hibernate.SQL: DEBUG
+      org.hibernate.orm.jdbc.bind: TRACE
+
   jpa:
     hibernate:
       ddl-auto: update
