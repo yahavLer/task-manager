@@ -32,21 +32,21 @@ public class TaskController {
         return ResponseEntity.ok(taskResponse);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/get/{taskId}")
     public ResponseEntity<TaskResponse> getTaskById(@RequestParam String taskId) {
         TaskEntity taskEntity = taskService.getTaskById(taskId);
         TaskResponse taskResponse = taskConvertor.convertToTaskResponse(taskEntity);
         return ResponseEntity.ok(taskResponse);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{taskId}")
     public ResponseEntity<TaskResponse> updateTask(@PathVariable String taskId, @RequestBody TaskBoundary taskBoundary) {
         TaskEntity updatedTaskEntity = taskService.updateTask(taskId, taskBoundary);
         TaskResponse taskResponse = taskConvertor.convertToTaskResponse(updatedTaskEntity);
         return ResponseEntity.ok(taskResponse); 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{taskId}")
     public ResponseEntity<String> deleteTask(@RequestParam String taskId) {
         taskService.deleteTask(taskId);
         return ResponseEntity.ok("Task deleted successfully");

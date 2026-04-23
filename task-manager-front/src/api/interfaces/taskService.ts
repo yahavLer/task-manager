@@ -14,6 +14,7 @@ export enum TaskStatus {
 }
 
 export interface TaskBoundary {
+    id: string;
     title : string;
     description: string;
     status: TaskStatus;
@@ -43,12 +44,24 @@ export const taskService = {
         const response = await taskHttp.delete(`/delete/${taskId}`);
         return response.data;
     },
-    getTaskByStatus: async (status: TaskStatus) => {
+    getTasksByStatus: async (status: TaskStatus) => {
         const response = await taskHttp.get(`/getTaskByStatus/${status}`);
         return response.data;
     },
-    getTaskPriorities: async (priority: TaskPriority) => {
-        const response = await taskHttp.get(`/getTaskPriorities/${priority}`);
+    getTasksByPriority: async (priority: TaskPriority) => {
+        const response = await taskHttp.get(`/getTaskByPriority/${priority}`);
+        return response.data;
+    },
+    deleteAllTasks: async () => {
+        const response = await taskHttp.delete("/deleteAll");
+        return response.data;
+    },
+    getTasksByDueDate: async (dueDate: Date) => {
+        const response = await taskHttp.get(`/getTaskByDueDate/${dueDate.toISOString()}`);
+        return response.data;
+    },
+    updateTaskStatus: async (taskId: string, newStatus: TaskStatus) => {
+        const response = await taskHttp.put(`/updateStatus/${taskId}/status/${newStatus}`);
         return response.data;
     },
 };

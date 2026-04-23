@@ -45,6 +45,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskEntity updateTask(String taskId, TaskBoundary taskBoundary) {
         TaskEntity existingTask = taskRepository.findById(taskId);
+        existingTask.setTitle(taskBoundary.getTitle());
+        existingTask.setDescription(taskBoundary.getDescription());
+        existingTask.setDueDate(taskBoundary.getDueDate());
+        existingTask.setPriority(taskBoundary.getPriority());
+        existingTask.setStatus(taskBoundary.getStatus());
+        existingTask.setUser(userRepository.findById(taskBoundary.getUserId()).orElseThrow(() -> new RuntimeException("User not found")));
         return taskRepository.save(existingTask);
     }
 

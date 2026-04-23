@@ -1,7 +1,5 @@
 import { useTaskPage } from "../hooks/useTaskPage";
-import { Filters } from "../components/taskView";
-import { TaskCard } from "../components/taskView";
-import { EditModal } from "../components/taskView";
+import { Filters, TaskCard } from "../components/taskView";
 
 export const TaskPage = () => {
   const state = useTaskPage();
@@ -21,18 +19,22 @@ export const TaskPage = () => {
 
       <div style={{ marginTop: 20 }}>
         {state.filteredTasks.map((t) => (
-        <TaskCard
-            key={t.title}
+          <TaskCard
+            key={t.id}
             task={t}
-            onEdit={state.setSelectedTask}
+            priority={state.priority}
+            status={state.status}
+            isEditing={state.editingTaskId === t.id}
+            editForm={state.editForm}
+            onEdit={state.startEdit}
+            onCancelEdit={state.cancelEdit}
+            onSaveEdit={state.saveEdit}
+            onEditFormChange={state.onEditFormChange}
+            onQuickStatusChange={state.changeTaskStatus}
+            saving={state.saving}
           />
         ))}
       </div>
-
-      <EditModal
-        task={state.selectedTask}
-        onClose={() => state.setSelectedTask(null)}
-      />
     </div>
   );
 };
