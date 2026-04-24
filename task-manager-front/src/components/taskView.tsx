@@ -68,6 +68,7 @@ type EditFormData = {
   priority: TaskPriority;
   status: TaskStatus;
   dueDate: string;
+  responsibleUser: string;
   userId: string;
 };
 
@@ -75,7 +76,7 @@ type TaskCardProps = {
   task: TaskBoundary;
   priority: TaskPriority[];
   status: TaskStatus[];
-
+  userNameById: Record<string, string>;
   isEditing: boolean;
   editForm: EditFormData | null;
 
@@ -104,6 +105,7 @@ export const TaskCard = ({
   onEditFormChange,
   onQuickStatusChange,
   saving = false,
+  userNameById,
 }: TaskCardProps) => {
   return (
     <div
@@ -194,6 +196,16 @@ export const TaskCard = ({
                 onChange={onEditFormChange}
               />
             </div>
+            <div>
+              <label>Responsible User</label>
+              <br />
+              <input
+                type="text"
+                name="responsibleUser"
+                value={editForm.responsibleUser}
+                onChange={onEditFormChange}
+              />
+            </div>
           </div>
 
           <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
@@ -229,8 +241,7 @@ export const TaskCard = ({
           </div>
 
           <p>Due: {new Date(task.dueDate).toLocaleDateString()}</p>
-          <p>User ID: {task.userId}</p>
-
+          <p>Responsible User: {userNameById[task.userId] || task.userId}</p>
           <button type="button" onClick={() => onEdit(task)}>
             Edit
           </button>

@@ -43,22 +43,22 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<UserResponse> getUserById(@RequestParam String userId) {
+    @GetMapping("/get/{userId}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable String userId) {
         UserEntity userEntity = userService.getUserById(userId);
         UserResponse userResponse = userConvertor.convertToUserResponse(userEntity);
         return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserResponse> updateUser(@RequestParam String userId, @RequestBody UserBoundary userBoundary) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserBoundary userBoundary) {
         UserEntity updatedUserEntity = userService.updateUser(userId, userBoundary);
         UserResponse userResponse = userConvertor.convertToUserResponse(updatedUserEntity);
         return ResponseEntity.ok(userResponse);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteUser(@RequestParam String userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable String userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok("User deleted successfully");
     }

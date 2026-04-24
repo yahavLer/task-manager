@@ -1,6 +1,7 @@
 import { taskService, TaskPriority, TaskStatus } from "../api/interfaces/taskService";
 import { useEffect, useMemo, useState } from "react";
 import type { TaskBoundary } from "../api/interfaces/taskService";
+import { userService } from "../api/interfaces/userService";
 
 type EditTaskFormData = {
   title: string;
@@ -21,6 +22,7 @@ export const useTaskPage = () => {
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<EditTaskFormData | null>(null);
   const [saving, setSaving] = useState(false);
+  const [userNameById, setUserNameById] = useState<Record<string, string>>({});
 
     useEffect(() => {
     const fetchTasks = async () => {
@@ -38,6 +40,7 @@ export const useTaskPage = () => {
         }
 
         setTasks(tasksData);
+        await loadUserNamesForTasks(tasksData);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
@@ -115,9 +118,9 @@ export const useTaskPage = () => {
 
       const updatedTask = await taskService.updateTask(editingTaskId, payload);
 
-      setTasks((prev) =>
-        prev.map((t) => (t.id === updatedTask.id ? updatedTask : t))
-      );
+      const updatedTasks = tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t));
+      setTasks(updatedTasks);
+      await loadUserNamesForTasks(updatedTasks);
 
       cancelEdit();
     } catch (error) {
@@ -130,14 +133,45 @@ export const useTaskPage = () => {
   async function changeTaskStatus(task: TaskBoundary, newStatus: TaskStatus) {
     try {
       const updatedTask = await taskService.updateTaskStatus(task.id, newStatus);
-      setTasks((prev) =>
-        prev.map((t) => (t.id === updatedTask.id ? updatedTask : t))
-      );
+      const updatedTasks = tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t));
+      setTasks(updatedTasks);
+      await loadUserNamesForTasks(updatedTasks);
     } catch (error) {
       console.error("Error updating task status:", error);
     }
   }
+  async function loadUserNamesForTasks(tasksData: TaskBoundary[]) {
+    const uniqueUserIds = [...new Set(tasksData.map((task) => task.userId).filter(Boolean))];
 
+    try {
+      const users = await Promise.all(
+        uniqueUserIds.map(async (userId) => {
+          try {
+            const user = await userService.getUserById(userId);
+            return {
+              userId,
+              fullName: `${user.firstName} ${user.lastName}`.trim(),
+            };
+          } catch (error) {
+            console.error(`Failed to load user ${userId}`, error);
+            return {
+              userId,
+              fullName: userId,
+            };
+          }
+        })
+      );
+
+      const nameMap: Record<string, string> = {};
+      users.forEach((user) => {
+        nameMap[user.userId] = user.fullName;
+      });
+
+      setUserNameById(nameMap);
+    } catch (error) {
+      console.error("Failed to load user names", error);
+    }
+  }
   return {
     priority: Object.values(TaskPriority) as TaskPriority[],
     status: Object.values(TaskStatus) as TaskStatus[],
@@ -158,5 +192,6 @@ export const useTaskPage = () => {
     onEditFormChange,
     saveEdit,
     changeTaskStatus,
+    userNameById,
   };
 };

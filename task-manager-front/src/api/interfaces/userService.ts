@@ -6,8 +6,16 @@ export interface UserBoundary {
     email: string;
     password: string;
     phoneNumber: string;
-
 }
+
+export interface UserResponse {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+}
+
 export type UserSearchResult = {
   id: string;
   firstName: string;
@@ -33,8 +41,6 @@ export const userService = {
     searchUsers: async (query: string) => {
         const response = await userHttp.get(`/search?query=${query}`);
         return response.data;
-    }
-    
-    
+    }    
 };
 
