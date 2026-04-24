@@ -12,4 +12,5 @@ public interface UserService {
     void deleteUser(String userId);
     List<UserEntity> getAllUsers();
     void deleteAllUsers();
+    List<UserEntity> searchUsers(String query);
 }

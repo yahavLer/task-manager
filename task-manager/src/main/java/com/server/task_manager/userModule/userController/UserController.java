@@ -78,4 +78,15 @@ public class UserController {
         return ResponseEntity.ok("All users deleted successfully"); 
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<UserResponse>> searchUsers(@RequestParam String query) {
+        List<UserEntity> users = userService.searchUsers(query);
+
+        List<UserResponse> response = users.stream()
+                .map(userConvertor::convertToUserResponse)
+                .toList();
+
+        return ResponseEntity.ok(response);
+    }
+
 }

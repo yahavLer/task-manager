@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@mui/material"
 import {TextField} from "@mui/material"
 import { TaskPriority, TaskStatus } from "../api/interfaces/taskService";
+import type { UserSearchResult } from "../api/interfaces/userService";
 
 
 export type NewTaskFormData = {
@@ -14,13 +15,28 @@ export type NewTaskFormData = {
 };
 
 type NewTaskFormViewProps = {
-  formData: NewTaskFormData;
-  submitting: boolean;
-  canSubmit: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+    formData: NewTaskFormData;
+    submitting: boolean;
+    canSubmit: boolean;
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+
+    userQuery: string;
+    onUserQueryChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    userOptions: UserSearchResult[];
+    onUserSelect: (user: UserSearchResult) => void;
 };
-export default function NewTaskFormView({ formData, submitting, canSubmit, onChange, onSubmit }: NewTaskFormViewProps) {
+export default function NewTaskFormView({
+    formData,
+    submitting,
+    canSubmit,
+    onChange,
+    onSubmit,
+    userQuery,
+    onUserQueryChange,
+    userOptions,
+    onUserSelect
+    }: NewTaskFormViewProps) {
     return (
         <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div>
@@ -56,8 +72,17 @@ export default function NewTaskFormView({ formData, submitting, canSubmit, onCha
                 </select>
             </div>
             <div>
-                <label>userId</label>
-                <input type="text" name="userId" value={formData.userId} onChange={onChange} />
+                <label>Assign to user</label>
+                <input type="text" value={userQuery} onChange={onUserQueryChange} placeholder="Search users..." />
+                {userOptions.length > 0 && (
+                    <ul style={{ border: "1px solid #ccc", padding: 0, margin: 0, listStyle: "none" }}>
+                        {userOptions.map((user) => (
+                            <li key={user.id} onClick={() => onUserSelect(user)} style={{ padding: 10, cursor: "pointer" }}>
+                                {user.firstName} {user.lastName}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
             <Button type="submit" variant="contained" color="primary" disabled={!canSubmit || submitting}>
                 {submitting ? "Creating..." : "Create Task"}

@@ -8,7 +8,11 @@ export interface UserBoundary {
     phoneNumber: string;
 
 }
-
+export type UserSearchResult = {
+  id: string;
+  firstName: string;
+  lastName: string;
+};
 export const userService = {
     createUser: async (user: UserBoundary) => {
         const response = await userHttp.post("/create", user);
@@ -25,7 +29,12 @@ export const userService = {
     deleteUser: async (userId: string) => {
         const response = await userHttp.delete(`/delete/${userId}`);
         return response.data;
+    },
+    searchUsers: async (query: string) => {
+        const response = await userHttp.get(`/search?query=${query}`);
+        return response.data;
     }
+    
     
 };
 
