@@ -91,3 +91,31 @@ npm run dev
 - DELETE /api/users/delete/{userId} — Delete a user
 - GET /api/users/getAll — Get all users
 - GET /api/users/search?query=... — Search users by first name, last name, or full name
+
+
+## Example create task
+
+```JSON
+{
+  "title": "Read book",
+  "description": "Read 20 pages",
+  "status": "PENDING",
+  "priority": "MEDIUM",
+  "dueDate": "2026-04-30",
+  "userId": "user-uuid-here"
+}
+```
+
+## Example create user
+
+```JSON
+{
+  "firstName": "Yahav",
+  "lastName": "Ler",
+  "email": "yahavler.1@gmail.com",
+  "phoneNumber": "0509298115",
+  "password": "12345678"
+}
+```
+
+
