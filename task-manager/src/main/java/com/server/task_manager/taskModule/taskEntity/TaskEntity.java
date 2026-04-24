@@ -3,7 +3,8 @@ import com.server.task_manager.taskModule.enums.TaskPriority;
 import com.server.task_manager.taskModule.enums.TaskStatus;
 import com.server.task_manager.userModule.userEntity.UserEntity;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 import jakarta.persistence.*;
 
@@ -29,7 +30,7 @@ public class TaskEntity {
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
     
-    private Date dueDate;
+    private LocalDate dueDate;
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id",nullable = false)
     private UserEntity user;   

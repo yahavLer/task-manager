@@ -11,8 +11,7 @@ import com.server.task_manager.taskModule.taskEntity.TaskEntity;
 import com.server.task_manager.taskModule.taskService.TaskService;
 import com.server.task_manager.taskModule.enums.TaskPriority;
 import com.server.task_manager.taskModule.enums.TaskStatus;
-import java.util.Date;
-
+import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
@@ -85,7 +84,7 @@ public class TaskController {
     }
 
     @GetMapping("/getTaskByDueDate/{dueDate}")
-    public ResponseEntity<List<TaskResponse>> getTasksByDueDate(@PathVariable Date dueDate) {
+    public ResponseEntity<List<TaskResponse>> getTasksByDueDate(@PathVariable LocalDate dueDate) {
         List<TaskEntity> taskEntities = taskService.getTasksByDueDate(dueDate);
         List<TaskResponse> taskResponses = taskEntities.stream()
                 .map(taskConvertor::convertToTaskResponse)
@@ -96,9 +95,7 @@ public class TaskController {
 
     @PutMapping("/updateStatus/{taskId}/status/{status}")
     public ResponseEntity<TaskResponse> updateTaskStatus(@PathVariable String taskId, @PathVariable TaskStatus status) {
-        TaskEntity taskEntity = taskService.getTaskById(taskId);
-        taskEntity.setStatus(status);
-        TaskEntity updatedTaskEntity = taskService.updateTask(taskId, taskConvertor.convertToTaskBoundary(taskEntity));
+        TaskEntity updatedTaskEntity = taskService.updateTaskStatus(taskId, status);
         TaskResponse taskResponse = taskConvertor.convertToTaskResponse(updatedTaskEntity);
         return ResponseEntity.ok(taskResponse);
     }

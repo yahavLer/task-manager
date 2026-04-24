@@ -5,8 +5,10 @@ type FiltersProps = {
   status: TaskStatus[];
   selectedPriority: TaskPriority | "ALL";
   selectedStatus: TaskStatus | "ALL";
+  selectedDueDate: string;
   onPriorityChange: (value: TaskPriority | "ALL") => void;
   onStatusChange: (value: TaskStatus | "ALL") => void;
+  onDueDateChange: (value: string) => void;
 };
 
 export const Filters = ({
@@ -14,8 +16,10 @@ export const Filters = ({
   status,
   selectedPriority,
   selectedStatus,
+  selectedDueDate,
   onPriorityChange,
   onStatusChange,
+  onDueDateChange,
 }: FiltersProps) => (
   <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
     <select
@@ -41,6 +45,20 @@ export const Filters = ({
         </option>
       ))}
     </select>
+
+    <div>
+      <label>Due Date</label>
+      <br />
+      <input
+        type="date"
+        value={selectedDueDate}
+        onChange={(e) => onDueDateChange(e.target.value)}
+      />
+      <button type="button" onClick={() => onDueDateChange("")}>
+        Clear
+      </button>
+    </div>
+
   </div>
 );
 

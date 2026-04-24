@@ -15,6 +15,8 @@ export const TaskPage = () => {
         selectedStatus={state.selectedStatus}
         onPriorityChange={state.setSelectedPriority}
         onStatusChange={state.setSelectedStatus}
+        selectedDueDate={state.selectedDueDate}
+        onDueDateChange={state.setSelectedDueDate}
       />
 
       <div style={{ marginTop: 20 }}>

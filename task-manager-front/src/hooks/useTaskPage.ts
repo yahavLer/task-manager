@@ -16,35 +16,53 @@ export const useTaskPage = () => {
 
   const [selectedPriority, setSelectedPriority] = useState<TaskPriority | "ALL">("ALL");
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | "ALL">("ALL");
+  const [selectedDueDate, setSelectedDueDate] = useState("");
 
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<EditTaskFormData | null>(null);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
+    useEffect(() => {
+    const fetchTasks = async () => {
       try {
-        const tasksData = await taskService.getAllTasks();
+        let tasksData: TaskBoundary[] = [];
+
+        if (selectedStatus !== "ALL") {
+          tasksData = await taskService.getTasksByStatus(selectedStatus);
+        } else if (selectedPriority !== "ALL") {
+          tasksData = await taskService.getTasksByPriority(selectedPriority);
+        } else if (selectedDueDate!== "") {
+          tasksData = await taskService.getTasksByDueDate(selectedDueDate);
+        } else {
+          tasksData = await taskService.getAllTasks();
+        }
+
         setTasks(tasksData);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
     };
 
-    fetchData();
-  }, []);
+    fetchTasks();
+  }, [selectedPriority, selectedStatus, selectedDueDate]);
 
-  const filteredTasks = useMemo(() => {
-    return tasks.filter((t) => {
-      const priorityOk =
-        selectedPriority === "ALL" || t.priority === selectedPriority;
+  function handlePriorityChange(value: TaskPriority | "ALL") {
+    setSelectedPriority(value);
+    setSelectedStatus("ALL");
+    setSelectedDueDate("");
+  }
 
-      const statusOk =
-        selectedStatus === "ALL" || t.status === selectedStatus;
+  function handleStatusChange(value: TaskStatus | "ALL") {
+    setSelectedStatus(value);
+    setSelectedPriority("ALL");
+    setSelectedDueDate("");
+  }
 
-      return priorityOk && statusOk;
-    });
-  }, [tasks, selectedPriority, selectedStatus]);
+  function handleDueDateChange(value: string) {
+    setSelectedDueDate(value);
+    setSelectedPriority("ALL");
+    setSelectedStatus("ALL");
+  }
 
   function startEdit(task: TaskBoundary) {
     setEditingTaskId(task.id);
@@ -54,7 +72,7 @@ export const useTaskPage = () => {
       description: task.description,
       priority: task.priority,
       status: task.status,
-      dueDate: new Date(task.dueDate).toISOString().slice(0, 10),
+      dueDate: task.dueDate,
       userId: task.userId,
     });
   }
@@ -91,7 +109,7 @@ export const useTaskPage = () => {
         description: editForm.description,
         priority: editForm.priority,
         status: editForm.status,
-        dueDate: new Date(editForm.dueDate),
+        dueDate: editForm.dueDate,
         userId: editForm.userId,
       };
 
@@ -125,9 +143,11 @@ export const useTaskPage = () => {
     status: Object.values(TaskStatus) as TaskStatus[],
     selectedPriority,
     selectedStatus,
-    setSelectedPriority,
-    setSelectedStatus,
-    filteredTasks,
+    selectedDueDate,
+    setSelectedPriority: handlePriorityChange,
+    setSelectedStatus: handleStatusChange,
+    setSelectedDueDate: handleDueDateChange,
+    filteredTasks: tasks,
 
     editingTaskId,
     editForm,

@@ -14,7 +14,7 @@ import com.server.task_manager.taskModule.taskEntity.TaskEntity;
 import com.server.task_manager.taskModule.taskRepository.TaskRepository;
 import com.server.task_manager.userModule.userEntity.UserEntity;
 import com.server.task_manager.userModule.userRepository.UserRepository;
-
+import java.time.LocalDate;
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
@@ -78,7 +78,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskEntity> getTasksByDueDate(Date dueDate) {
+    public List<TaskEntity> getTasksByDueDate(LocalDate dueDate) {
         /*return taskRepository.findAll().stream()
                 .filter(task -> task.getDueDate() == dueDate)
                 .toList();

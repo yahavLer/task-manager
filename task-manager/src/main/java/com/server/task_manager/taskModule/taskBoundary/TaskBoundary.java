@@ -1,6 +1,6 @@
 package com.server.task_manager.taskModule.taskBoundary;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.server.task_manager.taskModule.enums.TaskPriority;
 import com.server.task_manager.taskModule.enums.TaskStatus;
@@ -10,7 +10,7 @@ public class TaskBoundary {
     private String description;
     private TaskStatus status;
     private TaskPriority priority;
-    private Date dueDate;
+    private LocalDate dueDate;
     private String userId;
 
 
@@ -30,7 +30,7 @@ public class TaskBoundary {
         return priority;
     }
 
-    public Date getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
@@ -50,7 +50,7 @@ public class TaskBoundary {
     public void setPriority(TaskPriority priority) {
         this.priority = priority;
     }
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
     public void setUserId(String userId) {

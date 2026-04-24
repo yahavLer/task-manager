@@ -19,7 +19,7 @@ export interface TaskBoundary {
     description: string;
     status: TaskStatus;
     priority: TaskPriority;
-    dueDate: Date;
+    dueDate: string;
     userId: string;
 }
 
@@ -56,8 +56,8 @@ export const taskService = {
         const response = await taskHttp.delete("/deleteAll");
         return response.data;
     },
-    getTasksByDueDate: async (dueDate: Date) => {
-        const response = await taskHttp.get(`/getTaskByDueDate/${dueDate.toISOString()}`);
+    getTasksByDueDate: async (dueDate: string) => {
+        const response = await taskHttp.get(`/getTaskByDueDate/${dueDate}`);
         return response.data;
     },
     updateTaskStatus: async (taskId: string, newStatus: TaskStatus) => {

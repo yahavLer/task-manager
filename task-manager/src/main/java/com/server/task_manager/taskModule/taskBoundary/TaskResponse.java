@@ -1,7 +1,6 @@
 package com.server.task_manager.taskModule.taskBoundary;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 import com.server.task_manager.taskModule.enums.TaskPriority;
 import com.server.task_manager.taskModule.enums.TaskStatus;
 
@@ -17,6 +16,6 @@ public class TaskResponse {
     private String description;
     private TaskStatus status;
     private TaskPriority priority;
-    private Date dueDate;
+    private LocalDate dueDate;
     private String userId;
 }

@@ -1,7 +1,8 @@
 package com.server.task_manager.taskModule.taskRepository;
 import com.server.task_manager.taskModule.enums.TaskPriority;
 import com.server.task_manager.taskModule.enums.TaskStatus;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,6 @@ public interface TaskRepository extends JpaRepository<TaskEntity, UUID>, JpaSpec
     TaskEntity findById(String taskId);
     List<TaskEntity> findByStatus(TaskStatus status);
     List<TaskEntity> findByPriority(TaskPriority priority);
-    List<TaskEntity> findByDueDate(Date dueDate);
+    List<TaskEntity> findByDueDate(LocalDate dueDate);
     void deleteAll();
 }
