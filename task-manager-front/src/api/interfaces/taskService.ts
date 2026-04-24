@@ -45,11 +45,15 @@ export const taskService = {
         return response.data;
     },
     getTasksByStatus: async (status: TaskStatus) => {
-        const response = await taskHttp.get(`/getTaskByStatus/${status}`);
+        const response = await taskHttp.get(`/getTaskByStatus`, {
+        params: { status },
+    });
         return response.data;
     },
     getTasksByPriority: async (priority: TaskPriority) => {
-        const response = await taskHttp.get(`/getTaskByPriority/${priority}`);
+        const response = await taskHttp.get(`/getTaskByPriority`, {
+        params: { priority },
+    });
         return response.data;
     },
     deleteAllTasks: async () => {
@@ -57,7 +61,9 @@ export const taskService = {
         return response.data;
     },
     getTasksByDueDate: async (dueDate: string) => {
-        const response = await taskHttp.get(`/getTaskByDueDate/${dueDate}`);
+        const response = await taskHttp.get(`/getTaskByDueDate`, {
+        params: { dueDate },
+    });
         return response.data;
     },
     updateTaskStatus: async (taskId: string, newStatus: TaskStatus) => {

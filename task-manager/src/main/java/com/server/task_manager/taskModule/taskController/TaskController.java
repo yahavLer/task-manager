@@ -65,8 +65,8 @@ public class TaskController {
         return ResponseEntity.ok(taskResponses);
     }
 
-    @GetMapping("/getTaskByStatus/{status}")
-    public ResponseEntity<List<TaskResponse>> getTasksByStatus(@PathVariable TaskStatus status) {
+    @GetMapping("/getTaskByStatus")
+    public ResponseEntity<List<TaskResponse>> getTasksByStatus(@RequestParam TaskStatus status) {
         List<TaskEntity> taskEntities = taskService.getTasksByStatus(status);
         List<TaskResponse> taskResponses = taskEntities.stream()
                 .map(taskConvertor::convertToTaskResponse)
@@ -74,8 +74,8 @@ public class TaskController {
         return ResponseEntity.ok(taskResponses);
     }
 
-    @GetMapping("/getTaskByPriority/{priority}")
-    public ResponseEntity<List<TaskResponse>> getTasksByPriority(@PathVariable TaskPriority priority) {
+    @GetMapping("/getTaskByPriority")
+    public ResponseEntity<List<TaskResponse>> getTasksByPriority(@RequestParam TaskPriority priority) {
         List<TaskEntity> taskEntities = taskService.getTasksByPriority(priority);
         List<TaskResponse> taskResponses = taskEntities.stream()
                 .map(taskConvertor::convertToTaskResponse)
@@ -83,8 +83,8 @@ public class TaskController {
         return ResponseEntity.ok(taskResponses);
     }
 
-    @GetMapping("/getTaskByDueDate/{dueDate}")
-    public ResponseEntity<List<TaskResponse>> getTasksByDueDate(@PathVariable LocalDate dueDate) {
+    @GetMapping("/getTaskByDueDate")
+    public ResponseEntity<List<TaskResponse>> getTasksByDueDate(@RequestParam LocalDate dueDate) {
         List<TaskEntity> taskEntities = taskService.getTasksByDueDate(dueDate);
         List<TaskResponse> taskResponses = taskEntities.stream()
                 .map(taskConvertor::convertToTaskResponse)
