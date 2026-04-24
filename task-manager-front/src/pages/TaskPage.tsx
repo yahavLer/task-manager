@@ -35,6 +35,10 @@ export const TaskPage = () => {
             onQuickStatusChange={state.changeTaskStatus}
             saving={state.saving}
             userNameById={state.userNameById}
+            editUserQuery={state.editUserQuery}
+            editUserOptions={state.editUserOptions}
+            onEditQueryChange={state.onEditQueryChange}
+            onEditUserSelect={state.onEditUserSelect}
           />
         ))}
       </div>

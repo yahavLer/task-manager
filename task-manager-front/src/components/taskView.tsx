@@ -1,5 +1,5 @@
 import type { TaskBoundary, TaskPriority, TaskStatus } from "../api/interfaces/taskService";
-
+import type { UserSearchResult } from "../api/interfaces/userService";
 type FiltersProps = {
   priority: TaskPriority[];
   status: TaskStatus[];
@@ -68,7 +68,6 @@ type EditFormData = {
   priority: TaskPriority;
   status: TaskStatus;
   dueDate: string;
-  responsibleUser: string;
   userId: string;
 };
 
@@ -79,6 +78,10 @@ type TaskCardProps = {
   userNameById: Record<string, string>;
   isEditing: boolean;
   editForm: EditFormData | null;
+  editUserQuery: string;
+  editUserOptions: UserSearchResult[];
+  onEditQueryChange: (value: string) => void;
+  onEditUserSelect: (user: UserSearchResult) => void;
 
   onEdit: (task: TaskBoundary) => void;
   onCancelEdit: () => void;
@@ -106,6 +109,10 @@ export const TaskCard = ({
   onQuickStatusChange,
   saving = false,
   userNameById,
+  editUserQuery,
+  editUserOptions,
+  onEditQueryChange,
+  onEditUserSelect,
 }: TaskCardProps) => {
   return (
     <div
@@ -185,26 +192,27 @@ export const TaskCard = ({
                 onChange={onEditFormChange}
               />
             </div>
-
-            <div>
-              <label>User ID</label>
-              <br />
-              <input
-                type="text"
-                name="userId"
-                value={editForm.userId}
-                onChange={onEditFormChange}
-              />
-            </div>
             <div>
               <label>Responsible User</label>
               <br />
               <input
                 type="text"
-                name="responsibleUser"
-                value={editForm.responsibleUser}
-                onChange={onEditFormChange}
+                value={editUserQuery}
+                onChange={(e) => onEditQueryChange(e.target.value)}
+                placeholder="Search by first name / last name / full name"
               />
+
+              {editUserOptions.length > 0 && (
+                <div style={{ border: "1px solid #ccc", marginTop: 8, padding: 8 }}>
+                  {editUserOptions.map((user) => (
+                    <div key={user.id} style={{ marginBottom: 8 }}>
+                      <button type="button" onClick={() => onEditUserSelect(user)}>
+                        {user.firstName} {user.lastName}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 

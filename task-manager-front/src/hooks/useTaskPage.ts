@@ -2,6 +2,7 @@ import { taskService, TaskPriority, TaskStatus } from "../api/interfaces/taskSer
 import { useEffect, useMemo, useState } from "react";
 import type { TaskBoundary } from "../api/interfaces/taskService";
 import { userService } from "../api/interfaces/userService";
+import type { UserSearchResult } from "../api/interfaces/userService";  
 
 type EditTaskFormData = {
   title: string;
@@ -23,8 +24,10 @@ export const useTaskPage = () => {
   const [editForm, setEditForm] = useState<EditTaskFormData | null>(null);
   const [saving, setSaving] = useState(false);
   const [userNameById, setUserNameById] = useState<Record<string, string>>({});
+  const [editUserQuery, setEditUserQuery] = useState("");
+  const [editUserOptions, setEditUserOptions] = useState<UserSearchResult[]>([]); 
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchTasks = async () => {
       try {
         let tasksData: TaskBoundary[] = [];
@@ -48,6 +51,39 @@ export const useTaskPage = () => {
 
     fetchTasks();
   }, [selectedPriority, selectedStatus, selectedDueDate]);
+
+  useEffect(() => {
+    const loadEditUserOptions = async () => {
+      if (editUserQuery.trim() === "") {
+        setEditUserOptions([]);
+        return;
+      }
+      try {
+        const results = await userService.searchUsers(editUserQuery);
+        setEditUserOptions(results);
+      } catch (error) {
+        console.error("Failed to load users for edit form", error);
+      }
+    };
+    const timer = setTimeout(loadEditUserOptions, 300);
+    return () => clearTimeout(timer);
+  }, [editUserQuery]);
+
+  function onEditQueryChange(value: string) {
+    setEditUserQuery(value);
+  }
+
+  function onEditUserSelect(user: UserSearchResult) {
+    setEditUserQuery(`${user.firstName} ${user.lastName}`);
+    setEditUserOptions([]);
+    setEditForm((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        userId: user.id,
+      } as EditTaskFormData;
+    });
+  }
 
   function handlePriorityChange(value: TaskPriority | "ALL") {
     setSelectedPriority(value);
@@ -78,11 +114,14 @@ export const useTaskPage = () => {
       dueDate: task.dueDate,
       userId: task.userId,
     });
+    setEditUserQuery(userNameById[task.userId] || '');
   }
 
   function cancelEdit() {
     setEditingTaskId(null);
     setEditForm(null);
+    setEditUserQuery("");
+    setEditUserOptions([]);
   }
 
   function onEditFormChange(
@@ -193,5 +232,10 @@ export const useTaskPage = () => {
     saveEdit,
     changeTaskStatus,
     userNameById,
+
+    editUserQuery,
+    editUserOptions,
+    onEditQueryChange,
+    onEditUserSelect
   };
 };
