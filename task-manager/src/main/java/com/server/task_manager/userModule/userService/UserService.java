@@ -13,4 +13,5 @@ public interface UserService {
     List<UserEntity> getAllUsers();
     void deleteAllUsers();
     List<UserEntity> searchUsers(String query);
+    UserEntity loginUser(String email, String password);
 }

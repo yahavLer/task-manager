@@ -41,6 +41,10 @@ export const userService = {
     searchUsers: async (query: string) => {
         const response = await userHttp.get(`/search?query=${query}`);
         return response.data;
-    }    
+    }, 
+    loginUser: async (loginData: { email: string; password: string }) => {
+        const response = await userHttp.post("/login", loginData);
+        return response.data;
+    },
 };
 

@@ -77,4 +77,9 @@ public class UserServiceImpl implements UserService {
     public List<UserEntity> searchUsers(String query) {
         return userRepository.searchUsers(query);
     }
+
+    @Override
+    public UserEntity loginUser(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password);
+    }
 }

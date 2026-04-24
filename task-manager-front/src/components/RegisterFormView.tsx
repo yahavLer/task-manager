@@ -16,9 +16,10 @@ type RegisterFormViewProps = {
   canSubmit: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onGoToLogin: () => void;
 };
 
-export default function RegisterFormView({ formData, submitting, canSubmit, onChange, onSubmit }: RegisterFormViewProps) {
+export default function RegisterFormView({ formData, submitting, canSubmit, onChange, onSubmit, onGoToLogin }: RegisterFormViewProps) {
     return (
         <form onSubmit={onSubmit} className="space-y-4">
             <div>
@@ -73,6 +74,23 @@ export default function RegisterFormView({ formData, submitting, canSubmit, onCh
             >
                 {submitting ? "Registering..." : "Register"}
             </Button>
+            <div style={{ textAlign: "center" }}>
+                <span>Already a user? </span>
+                <button
+                type="button"
+                onClick={onGoToLogin}
+                style={{
+                    background: "none",
+                    border: "none",
+                    color: "#1976d2",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                    padding: 0,
+                }}
+                >
+                Login here
+                </button>
+            </div>
         </form>
     );
 }

@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.server.task_manager.taskModule.taskBoundary.TaskBoundary;
 import com.server.task_manager.taskModule.taskBoundary.TaskResponse;
 import com.server.task_manager.taskModule.taskEntity.TaskEntity;
+import com.server.task_manager.userModule.userBoundary.LoginRequest;
 import com.server.task_manager.userModule.userBoundary.UserBoundary;
 import com.server.task_manager.userModule.userBoundary.UserResponse;
 import com.server.task_manager.userModule.userConvertor.UserConvertor;
@@ -87,6 +88,13 @@ public class UserController {
                 .toList();
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+        UserEntity userEntity = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
+        UserResponse userResponse = userConvertor.convertToUserResponse(userEntity);
+        return ResponseEntity.ok(userResponse);
     }
 
 }

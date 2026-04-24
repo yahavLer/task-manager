@@ -21,6 +21,5 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID>{
         OR LOWER(CONCAT(u.firstName, ' ', u.lastName)) LIKE LOWER(CONCAT('%', :query, '%'))
         """)
     List<UserEntity> searchUsers(@Param("query") String query);
-
-
+    UserEntity findByEmailAndPassword(String email, String password);
 }
