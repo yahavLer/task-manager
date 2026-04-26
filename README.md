@@ -66,10 +66,7 @@ npm run dev
 - Update an existing task
 - Delete tasks
 - Update task status directly from the tasks page
-- Filter tasks by:
-- priority
-- status
-- due date
+- Filter tasks by: priority, status, due date
 - Assign a responsible user to a task
 - Search users by first name, last name, or full name
 ## API Endpoints
